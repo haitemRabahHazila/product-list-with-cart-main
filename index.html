@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+    <title>Dessert Cart</title>
+    <style>
+        .attribution { font-size: 11px; text-align: center; }
+        .attribution a { color: hsl(228, 45%, 44%); }
+        /* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
+
+body {
+  background-color: hsl(20, 50%, 98%);
+  color: #333;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2.5fr 1fr;
+  gap: 30px;
+}
+ 
+
+h1 {
+  font-size: 2rem;
+  grid-column: 1 / -1; 
+  color: hsl(14, 65%, 9%);
+}
+
+/* Menu Items Section */
+.menu-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.menu-card img{
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.item-info {
+  margin-bottom: 15px;
+}
+
+.item-name {
+  font-size: 1rem; 
+  font-weight: 100;
+  color: hsl(7, 20%, 60%);
+  margin-bottom: 0px;
+}
+
+.item-description {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: hsl(14, 65%, 9%);
+  margin-bottom: 0px;
+}
+
+.item-price { 
+  color: hsl(14, 86%, 42%);
+  font-size: 1.2rem;
+}
+
+.add-to-cart { 
+  color: black;
+  background-color: white;
+  border: 0.5px solid black;
+  margin: 0px auto;
+  width: 70%;
+  padding: 10px 15px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold; 
+  position: relative;
+  top: -20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+
+/* Cart Section */
+.cart {
+  background: white;
+  border-radius: 8px;
+  padding: 20px; 
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.cart h2 {
+  font-size: 1.3rem; 
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  color: hsl(14, 86%, 42%);
+}
+
+.cart-empty {
+  color: #888;
+  text-align: center;
+  margin-top: 20px;
+  font-style: italic;
+}
+.image{
+  text-align: center;
+}
+/* Attribution */
+.attribution {
+  grid-column: 1 / -1;
+  margin-top: 50px;
+  text-align: center;
+  color: #888;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+      grid-template-columns: 1fr;
+  }
+  
+  .cart {
+      position: static;
+      margin-top: 30px;
+  }
+}
+
+
+
+
+
+.menu-card {
+  background: white;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;  
+}
+
+ 
+.add-to-cart img {
+  width: 20px;
+  height: 20px;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: hsl(14, 86%, 42%);
+  color: white;
+  border-radius: 50px;
+  padding: 5px;
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: none;
+}
+
+.quantity-control button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.quantity-control span {
+  margin: 0 10px;
+  font-weight: bold;
+}
+
+/* Cart Section */
+.cart {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+
+.cart-header h2 {
+  font-size: 1.3rem;
+  color: hsl(14, 86%, 42%);
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.cart-item-info {
+  flex-grow: 1;
+}
+
+.cart-item-name {
+  font-weight: bold;
+}
+
+.cart-item-quantity {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.cart-item-price {
+  text-align: right;
+}
+
+.cart-item-remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.cart-empty {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.cart-empty img {
+  width: 150px;
+  margin-bottom: 10px;
+}
+
+.cart-empty p {
+  color: #888;
+  font-style: italic;
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin: 20px 0;
+}
+
+.confirm-order {
+  background-color: hsl(14, 86%, 42%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 12px;
+  width: 100%;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.confirm-order:hover {
+  background-color: hsl(14, 86%, 32%);
+}
+
+ 
+
+/* Attribution */
+.attribution {
+  grid-column: 1 / -1;
+  margin-top: 50px;
+  text-align: center;
+  color: #888;
+  font-size: 11px;
+}
+
+.attribution a {
+  color: hsl(228, 45%, 44%);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+      grid-template-columns: 1fr;
+  }
+
+  .cart {
+      position: static;
+      margin-top: 30px;
+  }
+}
+
+.confirmation-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.confirmation-content {
+  background: white;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 450px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(0);
+  animation: slideUp 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.confirmation-header {
+  background: linear-gradient(135deg, hsl(14, 86%, 42%), hsl(14, 86%, 32%));
+  color: white;
+  padding: 24px;
+  text-align: center;
+}
+
+.confirmation-icon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 12px;
+  color: white;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.confirmation-header h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.confirmation-subtitle {
+  margin: 8px 0 0;
+  opacity: 0.9;
+  font-size: 1rem;
+}
+
+.order-summary {
+  padding: 20px;
+}
+
+.order-summary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.order-summary-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.order-number {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.confirmed-items {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  padding-right: 8px;
+}
+
+.confirmed-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.confirmed-item:last-child {
+  border-bottom: none;
+}
+
+.confirmed-item-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-right: 12px;
+  border: 1px solid #f0f0f0;
+}
+
+.confirmed-item-details {
+  flex: 1;
+}
+
+.confirmed-item-name {
+  margin: 0 0 4px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.confirmed-item-meta {
+  display: flex;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.confirmed-item-total {
+  font-weight: 600;
+  min-width: 70px;
+  text-align: right;
+}
+
+.order-totals {
+  border-top: 1px solid #f0f0f0;
+  padding-top: 16px;
+}
+
+.order-total-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.order-total-row.grand-total {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-top: 12px;
+  color: hsl(14, 86%, 42%);
+}
+
+.confirmation-footer {
+  padding: 0 20px 20px;
+  text-align: center;
+}
+
+.eco-message {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.eco-message svg {
+  color: hsl(14, 86%, 42%);
+}
+
+.new-order-btn {
+  background-color: hsl(14, 86%, 42%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 14px 24px;
+  width: 100%;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.new-order-btn:hover {
+  background-color: hsl(14, 86%, 32%);
+  transform: translateY(-2px);
+}
+
+.new-order-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.new-order-btn:hover svg {
+  transform: translateX(3px);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to { 
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Scrollbar styling */
+.confirmed-items::-webkit-scrollbar {
+  width: 6px;
+}
+
+.confirmed-items::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.confirmed-items::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+.confirmed-items::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+ 
+    </style>
+</head>
+<body>
+    <main class="container">
+        
+        
+        <div class="menu-items">
+          <h1>Desserts</h1>
+            <!-- Waffle -->
+            <section class="menu-card">
+              <img src="assets/images/image-baklava-desktop.jpg" alt="">
+              <button class="add-to-cart"> <img src="assets/images/icon-add-to-cart.svg" alt=""> Add to Cart</button>
+              <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span class="quantity">1</span>
+                <button class="increase">+</button>
+               </div>
+                <div class="item-info">
+                    <h2 class="item-name">Waffle</h2>
+                    <p class="item-description">Waffle with Berries</p>
+                    <p class="item-price">$6.50</p>
+                </div>
+                
+            </section>
+
+            <!-- Crème Brûlée -->
+            <section class="menu-card">
+              <img src="assets/images/image-creme-brulee-desktop.jpg" alt="">
+              <button class="add-to-cart"> <img src="assets/images/icon-add-to-cart.svg" alt=""> Add to Cart</button>
+              <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span class="quantity">1</span>
+                <button class="increase">+</button>
+               </div>
+                <div class="item-info">
+                    <h2 class="item-name">Crème Brûlée</h2>
+                    <p class="item-description">Vanilla Bean Crème Brûlée</p>
+                    <p class="item-price">$7.00</p>
+                </div>
+              
+            </section>
+            <section class="menu-card">
+              <img src="assets/images/image-creme-brulee-desktop.jpg" alt="">
+              <button class="add-to-cart"> <img src="assets/images/icon-add-to-cart.svg" alt=""> Add to Cart</button>
+              <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span class="quantity">1</span>
+                <button class="increase">+</button>
+               </div>
+                <div class="item-info">
+                    <h2 class="item-name">Crème Brûlée</h2>
+                    <p class="item-description">Vanilla Bean Crème Brûlée</p>
+                    <p class="item-price">$7.00</p>
+                </div>
+              
+            </section>
+            <section class="menu-card">
+              <img src="assets/images/image-creme-brulee-desktop.jpg" alt="">
+              <button class="add-to-cart"> <img src="assets/images/icon-add-to-cart.svg" alt=""> Add to Cart</button>
+              <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span class="quantity">1</span>
+                <button class="increase">+</button>
+               </div>
+                <div class="item-info">
+                    <h2 class="item-name">Crème Brûlée</h2>
+                    <p class="item-description">Vanilla Bean Crème Brûlée</p>
+                    <p class="item-price">$7.00</p>
+                </div>
+              
+            </section>
+            <section class="menu-card">
+              <img src="assets/images/image-creme-brulee-desktop.jpg" alt="">
+              <button class="add-to-cart"> <img src="assets/images/icon-add-to-cart.svg" alt=""> Add to Cart</button>
+              <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span class="quantity">1</span>
+                <button class="increase">+</button>
+               </div>
+                <div class="item-info">
+                    <h2 class="item-name">Crème Brûlée</h2>
+                    <p class="item-description">Vanilla Bean Crème Brûlée</p>
+                    <p class="item-price">$7.00</p>
+                </div>
+              
+            </section>
+            <section class="menu-card">
+              <img src="assets/images/image-creme-brulee-desktop.jpg" alt="">
+              <button class="add-to-cart"> <img src="assets/images/icon-add-to-cart.svg" alt=""> Add to Cart</button>
+              <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span class="quantity">1</span>
+                <button class="increase">+</button>
+               </div>
+                <div class="item-info">
+                    <h2 class="item-name">Crème Brûlée</h2>
+                    <p class="item-description">Vanilla Bean Crème Brûlée</p>
+                    <p class="item-price">$7.00</p>
+                </div>
+              
+            </section>
+            <section class="menu-card">
+              <img src="assets/images/image-creme-brulee-desktop.jpg" alt="">
+              <button class="add-to-cart"> <img src="assets/images/icon-add-to-cart.svg" alt=""> Add to Cart</button>
+              <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span class="quantity">1</span>
+                <button class="increase">+</button>
+               </div>
+                <div class="item-info">
+                    <h2 class="item-name">Crème Brûlée</h2>
+                    <p class="item-description">Vanilla Bean Crème Brûlée</p>
+                    <p class="item-price">$7.00</p>
+                </div>
+              
+            </section>
+            <section class="menu-card">
+              <img src="assets/images/image-creme-brulee-desktop.jpg" alt="">
+              <button class="add-to-cart"> <img src="assets/images/icon-add-to-cart.svg" alt=""> Add to Cart</button>
+              <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span class="quantity">1</span>
+                <button class="increase">+</button>
+               </div>
+                <div class="item-info">
+                    <h2 class="item-name">Crème Brûlée</h2>
+                    <p class="item-description">Vanilla Bean Crème Brûlée</p>
+                    <p class="item-price">$7.00</p>
+                </div>
+              
+            </section>
+            <section class="menu-card">
+              <img src="assets/images/image-creme-brulee-desktop.jpg" alt="">
+              <button class="add-to-cart"> <img src="assets/images/icon-add-to-cart.svg" alt=""> Add to Cart</button>
+              <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span class="quantity">1</span>
+                <button class="increase">+</button>
+               </div>
+                <div class="item-info">
+                    <h2 class="item-name">Crème Brûlée</h2>
+                    <p class="item-description">Vanilla Bean Crème Brûlée</p>
+                    <p class="item-price">$7.00</p>
+                </div>
+              
+            </section>
+
+            
+        </div>
+
+        <aside class="cart">
+          <div class="cart-header">
+              <h2>Your Cart (<span id="cart-count">0</span>)</h2>
+          </div>
+          
+          <div id="cart-items">
+              <!-- Cart items will be added here dynamically -->
+          </div>
+          
+          <div class="cart-empty" id="cart-empty">
+              <img src="assets/images/illustration-empty-cart.svg" alt="Empty cart">
+              <p>Your added items will appear here</p>
+          </div>
+
+          <div id="cart-totals" style="display: none;">
+              <div class="cart-total">
+                  <span>Order Total</span>
+                  <span id="total-price">$0.00</span>
+              </div>
+              
+              <div class="eco-info">
+                  <img src="assets/images/icon-carbon-neutral.svg" alt="Eco">
+                  <span>This is a carbon-neutral delivery</span>
+              </div>
+              
+              <button class="confirm-order">Confirm Order</button>
+          </div>
+      </aside>
+    </main>
+
+    <div class="attribution">
+        Challenge by <a href="https://www.frontendmentor.io?ref=challenge">Frontend Mentor</a>. 
+        Coded by <a href="#">Your Name Here</a>.
+    </div>
+    <div class="confirmation-modal" id="confirmation-modal">
+      <div class="confirmation-content">
+        <div class="confirmation-header">
+          <svg class="confirmation-icon" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12l1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+          </svg>
+          <h2>Order Confirmed!</h2>
+          <p class="confirmation-subtitle">Your delicious desserts are on their way</p>
+        </div>
+        
+        <div class="order-summary">
+          <div class="order-summary-header">
+            <h3>Order Summary</h3>
+            <span class="order-number">#${Math.floor(Math.random() * 10000)}</span>
+          </div>
+          
+          <div id="confirmed-items" class="confirmed-items">
+            <!-- Items will be inserted here -->
+          </div>
+          
+          <div class="order-totals">
+            <div class="order-total-row">
+              <span>Subtotal</span>
+              <span id="subtotal-price">$0.00</span>
+            </div>
+            <div class="order-total-row">
+              <span>Delivery</span>
+              <span>FREE</span>
+            </div>
+            <div class="order-total-row grand-total">
+              <span>Total</span>
+              <span id="confirmed-total">$0.00</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="confirmation-footer">
+          <div class="eco-message">
+            <svg viewBox="0 0 24 24" width="20" height="20">
+              <path fill="currentColor" d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm-1.06 13.54L7.4 12l1.41-1.41 2.12 2.12 4.24-4.24 1.41 1.41-5.64 5.66z"/>
+            </svg>
+            <span>Carbon Neutral Delivery</span>
+          </div>
+          <button class="new-order-btn" id="new-order-btn">
+            <svg viewBox="0 0 24 24" width="20" height="20">
+              <path fill="currentColor" d="M14 12l-4-4v3H2v2h8v3l4-4zM20 4H4a2 2 0 0 0-2 2v4h2V6h16v12H4v-4H2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
+            </svg>
+            Start New Order
+          </button>
+        </div>
+      </div>
+    </div>
+  <script src="script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,132 @@
+// Update the order confirmation popup in your HTML (add this to your HTML file)
+<div class="confirmation-modal" id="confirmation-modal">
+  <div class="confirmation-content">
+      <h2>Order Confirmed! 🎉</h2>
+      <div class="order-summary">
+          <h3>Order Details</h3>
+          <div id="confirmed-items">
+              <!-- Items will be added here dynamically -->
+              <!-- Example item structure:
+              <div class="confirmed-item">
+                  <img src="path/to/image.jpg" alt="Item name" class="confirmed-item-img">
+                  <div class="confirmed-item-details">
+                      <h4 class="confirmed-item-name">Item Name</h4>
+                      <div class="confirmed-item-meta">
+                          <span class="confirmed-item-quantity">2x</span>
+                          <span class="confirmed-item-price">$5.50 each</span>
+                      </div>
+                  </div>
+                  <div class="confirmed-item-total">$11.00</div>
+              </div>
+              -->
+          </div>
+          <div class="order-total">
+              <span>Total:</span>
+              <span id="confirmed-total">$0.00</span>
+          </div>
+          <p class="eco-message">This is a carbon-neutral delivery</p>
+      </div>
+      <button class="new-order-btn" id="new-order-btn">Start New Order</button>
+  </div>
+</div>
+
+<style>
+/* Add these styles to your CSS */
+.confirmed-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.confirmed-item:last-child {
+    border-bottom: none;
+}
+
+.confirmed-item-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.confirmed-item-details {
+    flex-grow: 1;
+}
+
+.confirmed-item-name {
+    margin: 0 0 5px 0;
+    color: #333;
+}
+
+.confirmed-item-meta {
+    display: flex;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.confirmed-item-total {
+    font-weight: bold;
+    min-width: 70px;
+    text-align: right;
+}
+</style>
+
+// Updated JavaScript code
+function showOrderConfirmation() {
+    const confirmedItemsElement = document.getElementById('confirmed-items');
+    const confirmedTotalElement = document.getElementById('confirmed-total');
+    
+    // Group items by name with quantities and sum
+    const itemGroups = {};
+    cart.items.forEach(item => {
+        if (!itemGroups[item.name]) {
+            itemGroups[item.name] = { 
+                ...item, 
+                quantity: 0,
+                total: 0 
+            };
+        }
+        itemGroups[item.name].quantity++;
+        itemGroups[item.name].total += item.price;
+    });
+
+    // Clear previous items
+    confirmedItemsElement.innerHTML = '';
+
+    // Add each item to the confirmation
+    Object.values(itemGroups).forEach(item => {
+        const itemElement = document.createElement('div');
+        itemElement.className = 'confirmed-item';
+        
+        // Use thumbnail image if available, otherwise use desktop image
+        const itemImage = item.image.thumbnail || item.image.desktop;
+        
+        itemElement.innerHTML = `
+            <img src="${itemImage}" alt="${item.name}" class="confirmed-item-img">
+            <div class="confirmed-item-details">
+                <h4 class="confirmed-item-name">${item.name}</h4>
+                <div class="confirmed-item-meta">
+                    <span class="confirmed-item-quantity">${item.quantity}x</span>
+                    <span class="confirmed-item-price">$${item.price.toFixed(2)} each</span>
+                </div>
+            </div>
+            <div class="confirmed-item-total">$${item.total.toFixed(2)}</div>
+        `;
+        
+        confirmedItemsElement.appendChild(itemElement);
+    });
+
+    // Update total
+    confirmedTotalElement.textContent = `$${cart.total.toFixed(2)}`;
+    
+    // Show modal
+    confirmationModal.style.display = 'flex';
+    
+    // Clear cart
+    cart.items = [];
+    updateCartUI();
+    updateQuantityControls();
+}
